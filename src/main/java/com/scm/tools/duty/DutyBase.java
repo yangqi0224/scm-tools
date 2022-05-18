@@ -19,7 +19,6 @@ public interface DutyBase extends Runnable {
 
     /**
      * 前置准备
-     * @param objects
      * @throws Exception
      * @return
      */
@@ -27,7 +26,6 @@ public interface DutyBase extends Runnable {
 
     /**
      * 后置处理
-     * @param objects
      * @return
      */
     Object afterTask();

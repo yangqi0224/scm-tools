@@ -78,7 +78,14 @@ public class UploadDuty implements DutyBase {
         return instance;
     }
 
-    public DutyBase isLocal(boolean flag){
+    /**
+     * 上传文件采用的方式：
+     * false：程序中生成字节流
+     * true：上传本地文件
+     * @param flag
+     * @return
+     */
+    public UploadDuty isLocal(boolean flag){
         this.isLocal = flag;
         return this;
     }

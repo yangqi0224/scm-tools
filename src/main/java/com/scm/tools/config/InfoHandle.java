@@ -21,6 +21,13 @@ import java.util.List;
  **/
 public class InfoHandle {
 
+
+    /**
+     * 根据环境新建ScmPojo实例
+     * 新接入系统申请资源需要调用该方法生成scm信息
+     * @param env
+     * @return
+     */
     public static ScmPojo scmInfoHandle(Environment env){
         ScmPojo scmPojo = new ScmPojo();
         scmPojo.setEnvName(env);
@@ -58,6 +65,10 @@ public class InfoHandle {
         return scmPojo;
     }
 
+    /**
+     * 工作区信息整合
+     * @return
+     */
     public static WorkSpacePojo wsInfoHandle(){
         WorkSpacePojo wsInfo = new WorkSpacePojo();
         wsInfo.setWorkSpaceName(ScmInfo.getWorkspaceName());
@@ -93,7 +104,7 @@ public class InfoHandle {
             wsInfo.setDataLocation(list);
             wsInfo.setMetaLocation(scmMetaLocation);
             wsInfo.setEnableDirectory(ScmInfo.isEnableDirectory());
-            wsInfo.setDescription("default description");
+            wsInfo.setDescription(ScmInfo.getWorkspaceDescription());
         } catch (Exception e) {
             e.printStackTrace();
         }

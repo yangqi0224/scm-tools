@@ -26,7 +26,7 @@ public class DownloadDuty implements DutyBase {
 
     ScmCursor<ScmFileBasicInfo> cursor;
     private String scmDir;
-    private boolean isRecursion;
+    private boolean isRecursion = false;
 
 
     public DownloadDuty(ScmPojo scmPojo) {
@@ -34,6 +34,12 @@ public class DownloadDuty implements DutyBase {
     }
 
 
+    /**
+     * 是否下载子目录下的文件
+     * 默认false
+     * @param flag
+     * @return
+     */
     public DutyBase isRecursion(boolean flag){
         this.isRecursion = flag;
         return this;
@@ -43,6 +49,7 @@ public class DownloadDuty implements DutyBase {
         return this;
     }
 
+
     @Override
     public Object runTask() {
         ScmId id = null;
@@ -51,10 +58,13 @@ public class DownloadDuty implements DutyBase {
             return null;
         }
         File dirs = new File("./download" + scmDir);
+        //创建文件夹
         if (!dirs.isDirectory()){
+            System.out.println("ready to create download dir : " + dirs.getPath());
             dirs.mkdirs();
         }
         try {
+            //下载文件
             while (cursor.hasNext()){
                 id = cursor.getNext().getFileId();
                 ScmFile file = ScmFactory.File.getInstance(workspace,id);
@@ -91,6 +101,7 @@ public class DownloadDuty implements DutyBase {
          */
         File dir = new File("./download/");
         if (!dir.isDirectory()){
+            System.out.println("ready to create dir download dir: ./download" );
             dir.mkdirs();
         }
         this.session = SessionFactory.getUserSession(scmPojo);

@@ -21,7 +21,7 @@ public class ScmInfo {
     private static String SYS_REF;
     private static SystemLevel SYS_LEVEL;
     private static Map<Environment,List<String>> URLS;
-    private static Environment EXE_ENV;
+    private static List<Environment> EXE_ENV;
     private static String SCM_DIR;
     private static Boolean dirNameSameToLocal;
     private static String LOCAL_DIR;
@@ -32,6 +32,9 @@ public class ScmInfo {
     private static List<String> DATA_SITES;
     private static boolean ENABLE_DIRECTORY;
     private static List<String> DOMAIN_CLASS;
+
+    private static String WORKSPACE_DESCRIPTION;
+    private static boolean IS_RECURSION;
 
     static {
         Properties properties = new Properties();
@@ -47,7 +50,25 @@ public class ScmInfo {
             WORKSPACE_NAME = properties.getProperty("scm.workspace");
             SYS_REF = properties.getProperty("sys.ref");
             SYS_LEVEL = SystemLevel.valueOf(properties.getProperty("sys.level"));
-            EXE_ENV = Environment.valueOf(properties.getProperty("exe.env"));
+
+            EXE_ENV = new ArrayList<>();
+            List<String> envs = toList(properties.getProperty("exe.env"));
+            if (envs.size() == 1&& "ALL".equals(envs.get(0))){
+                EXE_ENV.add(Environment.DEV);
+                EXE_ENV.add(Environment.SIT);
+                EXE_ENV.add(Environment.UAT);
+                EXE_ENV.add(Environment.TST);
+                EXE_ENV.add(Environment.PRO);
+                EXE_ENV.add(Environment.XC_DEV);
+                EXE_ENV.add(Environment.XC_PRO);
+                EXE_ENV.add(Environment.XC_SIT);
+                EXE_ENV.add(Environment.XC_UAT);
+                EXE_ENV.add(Environment.XC_TST);
+            }else {
+                for (int i = 0 ; i < envs.size();i++){
+                    EXE_ENV.add(Environment.valueOf(envs.get(i)));
+                }
+            }
             SCM_DIR = properties.getProperty("scm.dir");
             LOCAL_DIR = properties.getProperty("local.dir");
             dirNameSameToLocal = Boolean.valueOf(properties.getProperty("dirNameSameToLocal"));
@@ -64,6 +85,8 @@ public class ScmInfo {
             URLS.put(Environment.XC_TST,toList(properties.getProperty("scm.xc.tst.urls")));
             URLS.put(Environment.XC_PRO,toList(properties.getProperty("scm.xc.pro.urls")));
 
+            WORKSPACE_DESCRIPTION = properties.getProperty("scm.workspace.description");
+            IS_RECURSION = Boolean.valueOf(properties.getProperty("scm.download.isRecursion"));
             META_DOMAIN = properties.getProperty("scm.meta.domain");
             META_SITE = properties.getProperty("scm.meta.site");
             DATA_DOMAINS = toList(properties.getProperty("scm.data.domains"));
@@ -101,6 +124,13 @@ public class ScmInfo {
 
     public static boolean isEnableDirectory() {
         return ENABLE_DIRECTORY;
+    }
+
+    public static String getWorkspaceDescription(){
+        return WORKSPACE_DESCRIPTION;
+    }
+    public static boolean isIsRecursion(){
+        return IS_RECURSION;
     }
 
     public static List<String> toList(String url){
@@ -141,7 +171,7 @@ public class ScmInfo {
         return SYS_LEVEL;
     }
 
-    public static Environment getExeEnv() {
+    public static List<Environment> getExeEnv() {
         return EXE_ENV;
     }
 

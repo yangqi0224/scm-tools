@@ -2,6 +2,7 @@ package com.scm.tools.option;
 
 import com.scm.tools.config.InfoHandle;
 import com.scm.tools.config.ScmInfo;
+import com.scm.tools.duty.DutyBase;
 import com.scm.tools.duty.impl.DownloadDuty;
 import com.scm.tools.duty.impl.UploadDuty;
 import com.scm.tools.pojo.ScmPojo;
@@ -16,12 +17,22 @@ import javax.sound.sampled.Line;
  * @Version 1.0
  **/
 public class UpgradeTest {
-    public void upgradeTest(){
-        ScmPojo scmPojo = InfoHandle.scmInfoHandle(ScmInfo.getExeEnv());
+
+    ScmPojo scmPojo;
+
+
+    public DutyBase buildUpload(){
         UploadDuty uploadDuty = new UploadDuty(scmPojo);
-        uploadDuty.isLocal(false).run();
-        DownloadDuty downloadDuty = new DownloadDuty(scmPojo);
-        downloadDuty.setDirVar("./").run();
+        return uploadDuty.isLocal(false);
     }
 
+    public DutyBase buildDownload(){
+        DownloadDuty downloadDuty = new DownloadDuty(scmPojo);
+        return downloadDuty.setDirVar("./download");
+    }
+
+    public UpgradeTest setScmPojo(ScmPojo scmPojo){
+        this.scmPojo = scmPojo;
+        return this;
+    }
 }

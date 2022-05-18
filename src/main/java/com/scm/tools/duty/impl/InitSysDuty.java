@@ -71,6 +71,10 @@ public class InitSysDuty implements DutyBase {
         return true;
     }
 
+    /**
+     * 角色授权
+     * @return
+     */
     private boolean grantPrivileges() {
         try {
             ScmFactory.User.alterUser(scmSession,ScmFactory.User.getUser(scmSession,scmPojo.getUserName()),new ScmUserModifier().
@@ -82,6 +86,10 @@ public class InitSysDuty implements DutyBase {
         return true;
     }
 
+    /**
+     * 创建工作区
+     * @return
+     */
     private boolean createWorkSpace() {
 
         try {
@@ -94,6 +102,10 @@ public class InitSysDuty implements DutyBase {
         return true;
     }
 
+    /**
+     * 创建角色
+     * @return
+     */
     private boolean createRole() {
         String WS_NAME = scmPojo.getWorkSpaceName();
         try {
@@ -120,6 +132,10 @@ public class InitSysDuty implements DutyBase {
         return true;
     }
 
+    /**
+     * 创建用户
+     * @return
+     */
     private boolean createUser() {
         ScmUser user = null;
         try {
@@ -144,6 +160,10 @@ public class InitSysDuty implements DutyBase {
     }
 
 
+    /**
+     * 失败回滚
+     * @throws ScmException
+     */
     private  void fallBack() throws ScmException {
         if (STATUS == 3){
             fallBackCreateRole();
