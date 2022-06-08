@@ -3,6 +3,7 @@ package com.scm.tools.duty.impl;
 import com.scm.tools.common.SessionFactory;
 import com.scm.tools.duty.DutyBase;
 import com.scm.tools.pojo.ScmPojo;
+import com.sequoiacm.apache.commons.codec.digest.DigestUtils;
 import com.sequoiacm.client.core.*;
 import com.sequoiacm.client.element.ScmFileBasicInfo;
 import com.sequoiacm.client.element.ScmId;

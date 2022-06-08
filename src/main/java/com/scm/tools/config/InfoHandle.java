@@ -33,33 +33,17 @@ public class InfoHandle {
         scmPojo.setEnvName(env);
         scmPojo.setAdminPwd(ScmInfo.getAdminPwd());
         scmPojo.setGateWays(ScmInfo.getUrlsByEnv(env));
-        if (ScmInfo.getUserName() != null){
-            scmPojo.setUserName(ScmInfo.getUserName());
-        }else {
-            scmPojo.setUserName(GenInfoForScm.generateUserName());
-        }
-        if (ScmInfo.getUserPwd() != null){
-            scmPojo.setUserPwd(ScmInfo.getUserPwd());
-        }else {
-            scmPojo.setUserPwd(GenInfoForScm.generatePassword());
-        }
-        if (ScmInfo.getWorkspaceName() != null){
-            scmPojo.setWorkSpaceName(ScmInfo.getWorkspaceName());
-        }else {
-            scmPojo.setWorkSpaceName(GenInfoForScm.generateWorkspaceName());
-        }
-
-        return scmPojo;
+        return scmInfoHandle(scmPojo);
     }
 
     public static ScmPojo scmInfoHandle(ScmPojo scmPojo){
-        if (scmPojo.getUserName() == null){
+        if (scmPojo.getUserName() == null || "".equals(scmPojo.getUserName())){
             scmPojo.setUserName(GenInfoForScm.generateUserName());
         }
-        if (scmPojo.getUserPwd() == null){
+        if (scmPojo.getUserPwd() == null || "".equals(scmPojo.getUserPwd())){
             scmPojo.setUserPwd(GenInfoForScm.generatePassword());
         }
-        if (scmPojo.getWorkSpaceName() == null){
+        if (scmPojo.getWorkSpaceName() == null || "".equals(scmPojo.getWorkSpaceName())){
             scmPojo.setWorkSpaceName(GenInfoForScm.generateWorkspaceName());
         }
         return scmPojo;
@@ -71,7 +55,12 @@ public class InfoHandle {
      */
     public static WorkSpacePojo wsInfoHandle(){
         WorkSpacePojo wsInfo = new WorkSpacePojo();
-        wsInfo.setWorkSpaceName(ScmInfo.getWorkspaceName());
+        if (ScmInfo.getWorkspaceName() == null || "".equals(ScmInfo.getWorkspaceName())){
+            wsInfo.setWorkSpaceName(GenInfoForScm.generateWorkspaceName());
+        }else {
+
+            wsInfo.setWorkSpaceName(ScmInfo.getWorkspaceName());
+        }
 
         List<String> dataSites = ScmInfo.getDataSites();
         List<String> dataDomains = ScmInfo.getDataDomains();

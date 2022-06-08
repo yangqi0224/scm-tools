@@ -6,7 +6,7 @@ package com.scm.tools.config;
 
 public enum SystemLevel {
 
-    LEVEL_A("A"),LEVEL_B("B");
+    A("A"),B("B");
 
     private String level;
     private SystemLevel(String level){
