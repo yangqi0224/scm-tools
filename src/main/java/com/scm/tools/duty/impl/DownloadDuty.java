@@ -4,10 +4,12 @@ import com.scm.tools.common.SessionFactory;
 import com.scm.tools.duty.DutyBase;
 import com.scm.tools.pojo.ScmPojo;
 import com.sequoiacm.apache.commons.codec.digest.DigestUtils;
+import com.sequoiacm.client.common.ScmType;
 import com.sequoiacm.client.core.*;
 import com.sequoiacm.client.element.ScmFileBasicInfo;
 import com.sequoiacm.client.element.ScmId;
 import com.sequoiacm.client.exception.ScmException;
+import org.bson.BasicBSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,6 +61,8 @@ public class DownloadDuty implements DutyBase {
             return null;
         }
         File dirs = new File("./download" + scmDir);
+        System.out.println(scmDir);
+        System.out.println(dirs.getAbsoluteFile());
         //创建文件夹
         if (!dirs.isDirectory()){
             System.out.println("ready to create download dir : " + dirs.getPath());
@@ -68,8 +72,7 @@ public class DownloadDuty implements DutyBase {
             //下载文件
             while (cursor.hasNext()){
                 id = cursor.getNext().getFileId();
-                ScmFile file = ScmFactory.File.getInstance(workspace,id);
-                file.getContent("./download" + scmDir + file.getFileName());
+                downloadFileById(id,0);
                 System.out.println("download file is successful, file id :"+id);
             }
         }catch (Exception e){
@@ -79,10 +82,34 @@ public class DownloadDuty implements DutyBase {
         return this;
     }
 
+
+    private boolean downloadFileById(ScmId id,int fileNo) throws ScmException {
+        boolean result = false;
+        ScmFile file = ScmFactory.File.getInstance(workspace,id);
+        String fileName = file.getFileName();
+        try {
+            if (fileNo > 0){
+                file.getContent("./download" + scmDir + fileName + "_" + fileNo);
+            }else {
+                file.getContent("./download" + scmDir + fileName);
+            }
+            result = true;
+        }catch (ScmException e){
+            if (e.getErrorCode() == -604){
+                fileNo++;
+                downloadFileById(id,fileNo);
+            }
+        }
+        return result;
+    }
     public ScmCursor<ScmFileBasicInfo> getCursor(String scmDir){
         ScmCursor<ScmFileBasicInfo> cursor = null;
         try {
-            cursor = ScmFactory.Directory.getInstance(workspace, scmDir).listFiles(null);
+            if (workspace.isEnableDirectory()){
+                cursor = ScmFactory.Directory.getInstance(workspace, scmDir).listFiles(null);
+            }else {
+                cursor = ScmFactory.File.listInstance(workspace, ScmType.ScopeType.SCOPE_ALL,new BasicBSONObject());
+            }
 
         } catch (ScmException e) {
             e.printStackTrace();
@@ -102,7 +129,7 @@ public class DownloadDuty implements DutyBase {
          */
         File dir = new File("./download/");
         if (!dir.isDirectory()){
-            System.out.println("ready to create dir download dir: ./download" );
+            System.out.println("ready to create download dir: ./download" );
             dir.mkdirs();
         }
         this.session = SessionFactory.getUserSession(scmPojo);

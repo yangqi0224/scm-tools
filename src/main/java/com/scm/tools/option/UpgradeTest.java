@@ -23,12 +23,12 @@ public class UpgradeTest {
 
     public DutyBase buildUpload(){
         UploadDuty uploadDuty = new UploadDuty(scmPojo);
-        return uploadDuty.isLocal(false);
+        return uploadDuty.isLocal(true);
     }
 
     public DutyBase buildDownload(){
         DownloadDuty downloadDuty = new DownloadDuty(scmPojo);
-        return downloadDuty.setDirVar("./download");
+        return downloadDuty.setDirVar("/");
     }
 
     public UpgradeTest setScmPojo(ScmPojo scmPojo){

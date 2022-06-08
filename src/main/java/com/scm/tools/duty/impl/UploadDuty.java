@@ -3,10 +3,12 @@ package com.scm.tools.duty.impl;
 import com.scm.tools.common.SessionFactory;
 import com.scm.tools.duty.DutyBase;
 import com.scm.tools.pojo.ScmPojo;
+import com.sequoiacm.client.common.ScmType;
 import com.sequoiacm.client.core.*;
 import com.sequoiacm.client.element.ScmFileBasicInfo;
 import com.sequoiacm.client.element.ScmId;
 import com.sequoiacm.client.exception.ScmException;
+import org.bson.BasicBSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -47,29 +49,38 @@ public class UploadDuty implements DutyBase {
         try {
             if (isLocal){
                 in = new ByteArrayInputStream(new byte[1*1024*1024]);
-                fileName = UUID.randomUUID().toString();
+                //fileName = UUID.randomUUID().toString();
+                fileName = "testfile.1";
             }else {
                 in = new FileInputStream(filePath);
                 String[] split = filePath.split("/");
                 fileName = split[split.length-1];
             }
             instance = ScmFactory.File.createInstance(workspace);
-            ScmDirectory directory = ScmFactory.Directory.getInstance(workspace,scmDir);
-            instance.setContent(in);
-            instance.setDirectory(directory);
 
-            ScmCursor<ScmFileBasicInfo> scmFileBasicInfoScmCursor = directory.listFiles(null);
+            instance.setContent(in);
+            ScmCursor<ScmFileBasicInfo> scmFileBasicInfoScmCursor;
+            if (workspace.isEnableDirectory()){
+                ScmDirectory directory = ScmFactory.Directory.getInstance(workspace,scmDir);
+                instance.setDirectory(directory);
+                scmFileBasicInfoScmCursor = directory.listFiles(null);
+            }else {
+                scmFileBasicInfoScmCursor = ScmFactory.File.listInstance(workspace, ScmType.ScopeType.SCOPE_ALL,new BasicBSONObject());
+            }
             int fileNo = 0;
+            String sameFile = fileName;
             while (scmFileBasicInfoScmCursor.hasNext()) {
-                if (scmFileBasicInfoScmCursor.getNext().getFileName().equals(fileName)){
-                    fileName += ++fileNo;
-                    scmFileBasicInfoScmCursor = directory.listFiles(null);
+                if (scmFileBasicInfoScmCursor.getNext().getFileName().equals(sameFile)){
+                    fileNo++;
+                    sameFile = fileName + "_" + fileNo;
+
+                    scmFileBasicInfoScmCursor = ScmFactory.File.listInstance(workspace, ScmType.ScopeType.SCOPE_ALL,new BasicBSONObject());
                 }
             }
             if (fileNo > 0){
-                System.out.println("file: " + filePath + "'s name has " + fileNo + " same to this. rename to : " + fileName);
+                System.out.println("file: " + fileName + "'s name has " + fileNo + " same to this. rename to : " + sameFile);
             }
-            instance.setFileName(fileName);
+            instance.setFileName(sameFile);
 
             System.out.println("ready to upload file : " + filePath + "to scm directory: " + scmDir);
         } catch (Exception e) {

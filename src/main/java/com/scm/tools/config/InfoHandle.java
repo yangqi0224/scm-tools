@@ -7,7 +7,6 @@ import com.scm.tools.pojo.WorkSpacePojo;
 import com.scm.tools.util.GenInfoForScm;
 import com.sequoiacm.client.element.bizconf.*;
 import com.sequoiacm.client.exception.ScmInvalidArgumentException;
-import com.sun.codemodel.internal.JCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,9 @@ public class InfoHandle {
         scmPojo.setEnvName(env);
         scmPojo.setAdminPwd(ScmInfo.getAdminPwd());
         scmPojo.setGateWays(ScmInfo.getUrlsByEnv(env));
+        scmPojo.setWorkSpaceName(ScmInfo.getWorkspaceName());
+        scmPojo.setUserName(ScmInfo.getUserName());
+        scmPojo.setUserPwd(ScmInfo.getUserPwd());
         return scmInfoHandle(scmPojo);
     }
 
