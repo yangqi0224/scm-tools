@@ -29,8 +29,8 @@ public class Test {
         /**
          * 工作区创建--测试代码
          */
-        /*InitSys initSys = new InitSys();
-        initSys.setScmPojo(InfoHandle.scmInfoHandle(Environment.UAT)).buildInit().beforeTask().run();*/
+        InitSys initSys = new InitSys();
+        initSys.setScmPojo(InfoHandle.scmInfoHandle(Environment.UAT)).buildInit().beforeTask().run();
 
 
         /**
