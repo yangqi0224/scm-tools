@@ -1,13 +1,9 @@
 package com.scm.tools.option;
 
-import com.scm.tools.config.InfoHandle;
-import com.scm.tools.config.ScmInfo;
 import com.scm.tools.duty.DutyBase;
 import com.scm.tools.duty.impl.DownloadDuty;
 import com.scm.tools.duty.impl.UploadDuty;
 import com.scm.tools.pojo.ScmPojo;
-
-import javax.sound.sampled.Line;
 
 /**
  * @ClassName UpgradeTest

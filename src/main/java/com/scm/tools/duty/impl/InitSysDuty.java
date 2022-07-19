@@ -2,21 +2,13 @@ package com.scm.tools.duty.impl;
 
 import com.scm.tools.common.SessionFactory;
 import com.scm.tools.config.InfoHandle;
-import com.scm.tools.config.ScmInfo;
 import com.scm.tools.duty.DutyBase;
 import com.scm.tools.pojo.ScmPojo;
 import com.scm.tools.pojo.WorkSpacePojo;
 import com.sequoiacm.client.core.*;
-import com.sequoiacm.client.element.bizconf.ScmDataLocation;
-import com.sequoiacm.client.element.bizconf.ScmSdbDataLocation;
-import com.sequoiacm.client.element.bizconf.ScmSdbMetaLocation;
-import com.sequoiacm.client.element.bizconf.ScmWorkspaceConf;
 import com.sequoiacm.client.element.privilege.ScmPrivilegeType;
 import com.sequoiacm.client.element.privilege.ScmResourceFactory;
 import com.sequoiacm.client.exception.ScmException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @ClassName InitSysDuty
