@@ -12,9 +12,7 @@ import org.bson.BasicBSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.UUID;
 
 /**
  * @ClassName UploadDuty
