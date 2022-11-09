@@ -1,8 +1,5 @@
 package com.scm.tools.config;
 
-import com.scm.tools.pojo.ScmPojo;
-
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
 
@@ -14,6 +11,10 @@ import java.util.*;
  * @Version 1.0
  **/
 public class ScmInfo {
+
+    /**
+     * 配置文件映射变量
+     */
     private static String ADMIN_PWD;
     private static String USER_NAME;
     private static String USER_PWD;
@@ -36,10 +37,10 @@ public class ScmInfo {
     private static String WORKSPACE_DESCRIPTION;
     private static boolean IS_RECURSION;
 
-    static {
+    static {//加载配置文件
         Properties properties = new Properties();
         InputStream in;
-        try{
+        try{//解析配置文件
             in = ScmInfo.class.getClassLoader().getResourceAsStream("scm-info.properties");
             //in = new FileInputStream("./scm-info.properties");
             properties.load(in);
@@ -137,7 +138,6 @@ public class ScmInfo {
         List<String> urls = new ArrayList<String>();
         String[] u = url.split(",");
         for (String gateway:u){
-            System.out.println(gateway);
             urls.add(gateway);
         }
         return urls;
